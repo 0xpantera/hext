@@ -1,3 +1,4 @@
+{-# LANGUAGE OverloadedStrings #-}
 module Lib
     ( processTextFile
     ) where
@@ -28,14 +29,6 @@ processText :: T.Text -> [T.Text]
 processText text = (getUniqueWords . dropNullLower . dropPunctuation) text
 
 
-extractVocab :: T.Text -> Vocabulary
-extractVocab t = map buildEntry $ group $ sort ws
-  where
-    ws = map T.toCaseFold $ filter (not . T.null) $ map cleanWord $ T.words t
-    buildEntry ws@(w:_) = (w, length ws)
-    cleanWord = T.dropAround (not . isLetter)
-
-
 printAllWords :: Vocabulary -> IO ()
 printAllWords vocab = do
   putStrLn "All words: "
@@ -52,6 +45,11 @@ processTextFile fname = do
 -- TODO
 -- Remove reliance on IO
 extractVocab :: T.Text -> Vocabulary
+extractVocab t = map buildEntry $ group $ sort ws
+  where
+    ws = map T.toCaseFold $ filter (not . T.null) $ map cleanWord $ T.words t
+    buildEntry ws@(w:_) = (w, length ws)
+    cleanWord = T.dropAround (not . isLetter)
 
 wordsCount :: Vocabulary -> Int
 
