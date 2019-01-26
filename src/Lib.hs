@@ -51,14 +51,35 @@ extractVocab t = map buildEntry $ group $ sort ws
     buildEntry ws@(w:_) = (w, length ws)
     cleanWord = T.dropAround (not . isLetter)
 
-wordsCount :: Vocabulary -> Int
-
-wordsByFrequency :: Vocabulary -> Vocabulary
 
 allWordsReport :: Vocabulary -> T.Text
+allWordsReport vocab = T.append "\nAll words:\n"
+                         $ T.unlines $ map fst vocab
+
+
+wordsCount :: Vocabulary -> Int
+wordsCount vocab = sum $ map snd vocab
+
+
+wordsByFrequency :: Vocabulary -> Vocabulary
+wordsByFrequency = sortBy (comparing $ down . snd)
 
 wordsCountReport :: Vocabulary -> T.Text
+wordsCountReport vocab = T.append "\nTotal number of words: "
+                           $ T.pack $ show $ wordsCount vocab
 
 frequentWordsReport :: Vocabulary -> Int -> T.Text
+frequentWordsReport vocab n = T.append "\nFrequent words:\n"
+                              $ T.unlines $ map showEntry $ take n
+                              $ wordsByFrequency vocab
+  where
+    showEntry (t, n) = T.append t $ T.pack $ " - " ++ show n
+    
 
-processTextFile :: FilePath -> IO ()
+processTextFile :: FilePath -> Int -> IO ()
+processTextFile fname n = do
+  text <- TIO.readFile fname
+  let vocab = extractVocab text
+  TIO.putStrLn $ allWordsReport vocab
+  TIO.putStrLn $ wordsCountReport vocab
+  TIO.putStrLn $ frequentWordsReport vocab n
