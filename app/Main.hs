@@ -8,8 +8,7 @@ import System.Environment
 
 main :: IO ()
 main = do
-  [fname] <- getArgs
-  text <- TIO.readFile fname
-  let ws = processText text
-  TIO.putStrLn $ T.unwords ws
-  print $ length ws
+  args <- getArgs
+  case args of
+    [fname] -> processTextFile fname
+    _ -> putStrLn "Usage: vocab-builder filename"

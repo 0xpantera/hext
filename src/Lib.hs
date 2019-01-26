@@ -1,5 +1,5 @@
 module Lib
-    ( processText
+    ( processTextFile
     ) where
 
 import Data.Char
@@ -25,3 +25,24 @@ getUniqueWords text = map head $ group $ sort text
 
 processText :: T.Text -> [T.Text]
 processText text = (getUniqueWords . dropNullLower . dropPunctuation) text
+
+
+extractVocab :: T.Text -> Vocabulary
+extractVocab t = map buildEntry $ group $ sort ws
+  where
+    ws = map T.toCaseFold $ filter (not . T.null) $ map cleanWord $ T.words t
+    buildEntry ws@(w:_) = (w, length ws)
+    cleanWord = T.dropAround (not . isLetter)
+
+
+printAllWords :: Vocabulary -> IO ()
+printAllWords vocab = do
+  putStrLn "All words: "
+  TIO.putStrLn $ T.unlines $ map fst vocab
+
+
+processTextFile :: FilePath -> IO ()
+processTextFile fname = do
+  text <- TIO.readFile fname
+  let vocab = extractVocab text
+  printAllWords vocab
