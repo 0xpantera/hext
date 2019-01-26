@@ -53,6 +53,10 @@ processTextFile fname = do
 -- Remove reliance on IO
 extractVocab :: T.Text -> Vocabulary
 
+wordsCount :: Vocabulary -> Int
+
+wordsByFrequency :: Vocabulary -> Vocabulary
+
 allWordsReport :: Vocabulary -> T.Text
 
 wordsCountReport :: Vocabulary -> T.Text
