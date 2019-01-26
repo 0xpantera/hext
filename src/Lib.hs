@@ -6,6 +6,7 @@ module Lib
 import Lib.Types
 import Data.Char
 import Data.List
+import Data.Ord
 import qualified Data.Text as T
 import qualified Data.Text.IO as TIO
 import System.Environment
@@ -47,7 +48,7 @@ wordsCount vocab = sum $ map snd vocab
 
 
 wordsByFrequency :: Vocabulary -> Vocabulary
-wordsByFrequency = sortBy (comparing $ down . snd)
+wordsByFrequency = sortBy (comparing $ Down . snd)
 
 wordsCountReport :: Vocabulary -> T.Text
 wordsCountReport vocab = T.append "\nTotal number of words: "
