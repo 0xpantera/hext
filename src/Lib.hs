@@ -2,6 +2,7 @@ module Lib
     ( processTextFile
     ) where
 
+import Lib.Types
 import Data.Char
 import Data.List
 import qualified Data.Text as T
@@ -46,3 +47,16 @@ processTextFile fname = do
   text <- TIO.readFile fname
   let vocab = extractVocab text
   printAllWords vocab
+
+
+-- TODO
+-- Remove reliance on IO
+extractVocab :: T.Text -> Vocabulary
+
+allWordsReport :: Vocabulary -> T.Text
+
+wordsCountReport :: Vocabulary -> T.Text
+
+frequentWordsReport :: Vocabulary -> Int -> T.Text
+
+processTextFile :: FilePath -> IO ()
