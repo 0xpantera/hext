@@ -1,3 +1,4 @@
+{-# LANGUAGE OverloadedStrings #-}
 module Main where
 
 import Lib
@@ -10,5 +11,5 @@ main :: IO ()
 main = do
   args <- getArgs
   case args of
-    [fname] -> processTextFile fname
-    _ -> putStrLn "Usage: vocab-builder filename"
+    [fname, n] -> processTextFile fname (read n)
+    _ -> putStrLn "Usage: vocab-builder filename number_of_frequent_words"

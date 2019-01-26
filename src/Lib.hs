@@ -29,21 +29,6 @@ processText :: T.Text -> [T.Text]
 processText text = (getUniqueWords . dropNullLower . dropPunctuation) text
 
 
-printAllWords :: Vocabulary -> IO ()
-printAllWords vocab = do
-  putStrLn "All words: "
-  TIO.putStrLn $ T.unlines $ map fst vocab
-
-
-processTextFile :: FilePath -> IO ()
-processTextFile fname = do
-  text <- TIO.readFile fname
-  let vocab = extractVocab text
-  printAllWords vocab
-
-
--- TODO
--- Remove reliance on IO
 extractVocab :: T.Text -> Vocabulary
 extractVocab t = map buildEntry $ group $ sort ws
   where
